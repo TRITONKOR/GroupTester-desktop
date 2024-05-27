@@ -1,0 +1,138 @@
+.textField {
+  -fx-background-color: #212121;
+  -fx-border-color: #978686;
+  -fx-border-radius: 10px; /* Змініть розмір, якщо потрібно */
+  -fx-padding: 5px 10px; /* Змініть відповідно до вашого бажаного розміру */
+  -fx-background-insets: 0;
+
+  -fx-pref-height: 40px;
+  -fx-min-height: 40px;
+  -fx-max-height: 40px;
+
+  -fx-pref-width: 250px;
+  -fx-min-width: 250px;
+  -fx-max-width: 250px;
+
+  -fx-font-weight: bold;
+
+  -fx-text-fill: white;
+  -fx-border-insets: 0;
+}
+
+.mainLabel {
+  -fx-text-fill: white;
+  -fx-font-family: "Inter";
+  -fx-font-size: 22px; /* Задаємо розмір шрифту */
+  -fx-font-weight: bold; /* Задаємо жирний стиль шрифту */
+}
+
+.titleLabel {
+  -fx-text-fill: white;
+  -fx-font-family: "Inter";
+  -fx-font-size: 30px; /* Задаємо розмір шрифту */
+  -fx-font-weight: bold; /* Задаємо жирний стиль шрифту */
+}
+
+.comboBox {
+  -fx-font-family: "Inter"; /* Задаємо шрифт */
+  -fx-font-size: 14px; /* Задаємо розмір шрифту */
+  -fx-font-weight: bold; /* Задаємо жирний стиль шрифту */
+  -fx-background-color: #212121; /* Задаємо колір фону */
+  -fx-border-color: #978686; /* Задаємо колір рамки */
+  -fx-border-radius: 5px; /* Округлення кутів */
+  -fx-padding: 5px; /* Відступи в середині комбінованого поля */
+}
+
+.comboBox .arrow-button {
+  -fx-background-color: transparent; /* Прозорий колір фону стрілки */
+}
+
+.comboBox .arrow-button:hover {
+  -fx-background-color: #E0E0E0; /* Задаємо колір фону при наведенні курсору */
+}
+
+.comboBox .list-cell {
+  -fx-background-color: #212121;
+  -fx-text-fill: white;
+  -fx-font-family: "Inter"; /* Задаємо шрифт для випадаючого списку */
+  -fx-font-size: 14px; /* Задаємо розмір шрифту для випадаючого списку */
+}
+
+.menuButton {
+  -fx-background-color: #343333;
+  -fx-background-radius: 10;
+  -fx-text-fill: white;
+  -fx-padding: 20,20,0,0;
+  -fx-font-size: 20px;
+  -fx-pref-width: Infinity;
+  -fx-font-weight: bold;
+}
+
+.menuButton:hover {
+  -fx-background-color: #421791; /* Колір при наведенні миші */
+}
+
+.menuButton:selected {
+  -fx-background-color: #4345BC; /* Колір при натисканні кнопки */
+}
+
+.secondaryButton {
+  -fx-background-color: #4345BC;
+  -fx-background-radius: 20;
+  -fx-text-fill: white;
+  -fx-pref-width: 180px;
+  -fx-pref-height: 50px;
+  -fx-font-size: 18px;
+}
+
+.secondaryButton:hover {
+  -fx-opacity: 0.8; /* Зменшення прозорості при наведенні */
+}
+
+.secondaryButton:pressed {
+  -fx-opacity: 0.6; /* Зменшення прозорості при натисканні */
+}
+
+.miniButton {
+  -fx-background-color: #4345BC;
+  -fx-background-radius: 20;
+  -fx-text-fill: white;
+  -fx-font-size: 16px;
+}
+
+.miniButton:hover {
+  -fx-opacity: 0.8; /* Зменшення прозорості при наведенні */
+}
+
+.miniButton:pressed {
+  -fx-opacity: 0.6; /* Зменшення прозорості при натисканні */
+}
+
+.scroll-pane {
+  -fx-background-color: transparent;
+  -fx-border-color: transparent;
+  -fx-padding: 10;
+  -fx-background-radius: 15; /* Кути */
+  -fx-border-radius: 15; /* Кути */
+}
+
+.scroll-pane .viewport {
+  -fx-background-color: #343333;
+  -fx-background-radius: 15; /* Кути для внутрішньої частини */
+}
+
+.scroll-pane .content {
+  -fx-background: #343333; /* Колір заднього фону вмісту */
+}
+
+.scroll-pane .scroll-bar:horizontal .track,
+.scroll-pane .scroll-bar:vertical .track {
+  -fx-background-color: #343333; /* Колір заднього фону треків прокрутки */
+}
+
+.transparent-text-field {
+  -fx-background-color: transparent;
+  -fx-text-fill: white;
+  -fx-font-size: 16;
+  -fx-font-weight: bold;
+}

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<?import java.net.URL?>
+<?import javafx.scene.image.ImageView?>
+<BorderPane xmlns="http://javafx.com/javafx"
+  xmlns:fx="http://javafx.com/fxml"
+  fx:id="root"
+  fx:controller="com.tritonkor.grouptester.desktop.presentation.controller.MainController"
+  style="-fx-background-color: #212121;"
+  prefHeight="400.0" prefWidth="600.0">
+  <fx:define>
+    <ToggleGroup fx:id="toggleGroup" />
+  </fx:define>
+  <left>
+    <VBox style="-fx-background-color: #343333; -fx-padding: 20,0,0,0;" prefHeight="Infinity" prefWidth="300" >
+      <HBox alignment="CENTER" prefWidth="Infinity" style="-fx-border-color: #212121; -fx-border-width: 0 0 2 0;">
+        <Label fx:id="titleLabel" text="GroupTester" styleClass="titleLabel" />
+      </HBox>
+      <VBox style="-fx-padding: 10,0,0,0;" VBox.vgrow="ALWAYS" spacing="20">
+          <ToggleButton text="Групи" styleClass="menuButton" toggleGroup="$toggleGroup" onAction="#handleMenuSelection"/>
+        <ToggleButton text="Результати" styleClass="menuButton" toggleGroup="$toggleGroup" onAction="#handleMenuSelection"/>
+      </VBox>
+      <VBox style="-fx-padding: 10,0,0,0;">
+        <ImageView fx:id="userAvatarImageView" fitHeight="100.0" fitWidth="100.0"/>
+        <Label fx:id="usernameLabel"   styleClass="mainLabel"/>
+      </VBox>
+    </VBox>
+  </left>
+  <right>
+
+  </right>
+</BorderPane>

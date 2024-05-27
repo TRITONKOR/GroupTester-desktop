@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+  xmlns:fx="http://javafx.com/fxml"
+  fx:controller="com.tritonkor.grouptester.desktop.presentation.controller.result.ResultListController"
+  prefHeight="400.0" prefWidth="600.0">
+  <center>
+    <VBox alignment="CENTER" spacing="20.0"
+      style="-fx-padding: 20;">
+      <children>
+        <Label text="Список результатів" fx:id="testLabel" styleClass="mainLabel" style="-fx-font-size: 30px;"/>
+        <ScrollPane fx:id="resultsScrollPane"  prefHeight="700" styleClass="scroll-pane" VBox.vgrow="ALWAYS">
+          <VBox fx:id="vboxContainer" spacing="50" style="-fx-padding: 30,40,0,0;" prefWidth="${resultsScrollPane.width}">
+            <!-- Ваші елементи тут -->
+          </VBox>
+        </ScrollPane>
+      </children>
+
+    </VBox>
+  </center>
+</BorderPane>

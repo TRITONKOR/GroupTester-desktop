@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+  fx:controller="com.tritonkor.grouptester.desktop.presentation.controller.auth.RegisterController"
+  prefHeight="500.0" prefWidth="700.0">
+
+  <!-- Заднє зображення -->
+  <ImageView fx:id="backgroundImage">
+    <image>
+      <Image url="@students.jpg"/>
+    </image>
+  </ImageView>
+
+  <center>
+    <StackPane style="-fx-background-color: rgba(0, 0, 0, 0.5);">
+      <VBox alignment="CENTER" spacing="20.0"
+        style="-fx-background-color: #212121;  -fx-padding: 20;" maxWidth="450.0" maxHeight="320">
+        <children>
+          <Label text="Реєстрація" fx:id="mainLabel" styleClass="mainLabel"/>
+          <HBox spacing="20" alignment="CENTER">
+            <children>
+              <ImageView fitHeight="100.0" fx:id="avatarImage" fitWidth="100.0" onMouseClicked="#handleAvatarImageClick">
+                <image>
+                  <Image url="@avatar.png"/>
+                </image>
+              </ImageView>
+              <VBox spacing="10.0" alignment="CENTER">
+                <children>
+                  <TextField fx:id="loginField" promptText="Логін" styleClass="textField"/>
+                  <PasswordField fx:id="passwordField" promptText="Пароль" styleClass="textField"/>
+                  <TextField fx:id="emailField" promptText="Пошта" styleClass="textField"/>
+                  <ComboBox fx:id="roleComboBox" promptText="Роль" styleClass="comboBox"/>
+                </children>
+              </VBox>
+            </children>
+          </HBox>
+          <Button text="Зареєструватись" styleClass="secondaryButton" onMouseClicked="#handleRegisterUser"/>
+          <HBox alignment="CENTER" spacing="5.0">
+            <children>
+              <Label text="Вже є аккаунт?" textFill="white"/>
+              <Hyperlink text="Увійти" fx:id="authenticateHyperLink"
+                onAction="#handleAuthenticateHyperlink"/>
+            </children>
+          </HBox>
+        </children>
+      </VBox>
+    </StackPane>
+  </center>
+</BorderPane>
