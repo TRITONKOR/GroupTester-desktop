@@ -15,6 +15,7 @@ public class TestResponse {
     private String id;
     private String title;
     private List<QuestionResponse> questions;
+    private int time;
     private List<TagResponse> tags;
     private LocalDateTime createDate;
 }

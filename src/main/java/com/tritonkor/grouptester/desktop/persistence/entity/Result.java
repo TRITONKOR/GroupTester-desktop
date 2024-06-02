@@ -12,16 +12,18 @@ public class Result extends Entity {
     private User owner;
     private UUID testId;
     private Test test;
+    private String groupCode;
     private Mark mark;
     private LocalDateTime createdAt;
 
-    public Result(UUID id, UUID ownerId, User owner, UUID testId, Test test,
+    public Result(UUID id, UUID ownerId, User owner, UUID testId, Test test, String groupCode,
              Mark mark, LocalDateTime createdAt) {
         super(id);
         this.ownerId = ownerId;
         this.owner = owner;
         this.testId = testId;
         this.test = test;
+        this.groupCode = groupCode;
         this.mark = mark;
         this.createdAt = createdAt;
     }
@@ -36,8 +38,8 @@ public class Result extends Entity {
      * @return A {@code ResultBuilderId} instance.
      */
     public static ResultBuilderId builder() {
-        return id -> ownerId -> owner -> testId -> test -> mark -> createdAt -> () -> new Result(
-                id, ownerId, owner, testId, test, mark, createdAt);
+        return id -> ownerId -> owner -> testId -> test -> groupCode -> mark -> createdAt -> () -> new Result(
+                id, ownerId, owner, testId, test, groupCode, mark, createdAt);
     }
 
     /**
@@ -65,20 +67,19 @@ public class Result extends Entity {
 
     public interface ResultBuilderTest {
 
-        ResultBuilderMark test(Test test);
+        ResultBuilderGroupCode test(Test test);
     }
 
-    /**
-     * Interface for the {@code Result} builder to set the grade.
-     */
+    public interface ResultBuilderGroupCode {
+
+        ResultBuilderMark groupCode(String groupCode);
+    }
+
     public interface ResultBuilderMark {
 
         ResultBuilderCreatedAt mark(Mark mark);
     }
 
-    /**
-     * Interface for the {@code Result} builder to set the creation date.
-     */
     public interface ResultBuilderCreatedAt {
 
         ResultBuilder createdAt(LocalDateTime createdAt);
@@ -102,6 +103,10 @@ public class Result extends Entity {
 
     public UUID getTestId() {
         return testId;
+    }
+
+    public String getGroupCode() {
+        return groupCode;
     }
 
     /**

@@ -9,7 +9,7 @@
 <BorderPane xmlns="http://javafx.com/javafx"
   xmlns:fx="http://javafx.com/fxml"
   fx:controller="com.tritonkor.grouptester.desktop.presentation.controller.group.JoinGroupController"
-  prefHeight="400.0" prefWidth="600.0">
+  prefHeight="600.0" prefWidth="800.0">
   <center>
     <VBox alignment="CENTER" spacing="20.0"
       style="-fx-padding: 20;">
@@ -25,7 +25,7 @@
           </children>
         </HBox>
       </children>
-      <Button text="Створити" fx:id="joinGroupButton" styleClass="secondaryButton" onAction="#handleJoinGroup"/>
+      <Button text="Доєднатись" fx:id="joinGroupButton" styleClass="secondaryButton" onAction="#handleJoinGroup"/>
     </VBox>
   </center>
 </BorderPane>

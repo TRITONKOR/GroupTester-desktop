@@ -8,17 +8,17 @@ import com.tritonkor.grouptester.desktop.domain.AuthorizeService;
 import com.tritonkor.grouptester.desktop.domain.ResultService;
 import com.tritonkor.grouptester.desktop.net.controller.TestController;
 import com.tritonkor.grouptester.desktop.net.response.ResultResponse;
-import com.tritonkor.grouptester.desktop.persistence.entity.Result;
 import com.tritonkor.grouptester.desktop.persistence.entity.Test;
+import com.tritonkor.grouptester.desktop.persistence.entity.User.Role;
 import com.tritonkor.grouptester.desktop.presentation.controller.MainController;
 import com.tritonkor.grouptester.desktop.presentation.controller.question.QuestionListController;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
@@ -40,26 +40,32 @@ public class ResultListController {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-
     @FXML
-    public void initialize() throws JsonProcessingException {
+    public void initialize() {
         objectMapper.registerModule(new JavaTimeModule());
         updateResultList();
     }
 
-    public void updateResultList() throws JsonProcessingException {
-        Map<String, String> filters = new HashMap<>();
-        filters.put("userId", AuthorizeService.getCurrentUser().getId().toString());
-        HttpResponse<String> response = ResultService.getResultsByUser(filters);
+    public void updateResultList() {
         List<ResultResponse> results;
-
-        if (response.statusCode() == 200) {
-            String jsonResponse = response.body();
-            System.out.println(jsonResponse);
-            results = objectMapper.readValue(jsonResponse, new TypeReference<List<ResultResponse>>() {});
+        if (AuthorizeService.getCurrentUser().getRole().equals(Role.TEACHER)) {
+            results = ResultService.getResults();
         } else {
-            // Обробка помилки або повернення порожнього списку
-            throw new RuntimeException("Failed to fetch results: " + response.statusCode());
+            Map<String, String> filters = new HashMap<>();
+            filters.put("userId", AuthorizeService.getCurrentUser().getId().toString());
+            HttpResponse<String> response = ResultService.getResultsByStudent(filters);
+            results = new ArrayList<>();
+            try {
+
+                if (response.statusCode() == 200) {
+                    String jsonResponse = response.body();
+                    results = objectMapper.readValue(jsonResponse, new TypeReference<List<ResultResponse>>() {
+                    });
+                } else {
+                    // Обробка помилки або повернення порожнього списку
+                    throw new RuntimeException("Failed to fetch results: " + response.statusCode());
+                }
+            } catch (JsonProcessingException e) {}
         }
 
         vboxContainer.getChildren().clear();
@@ -68,17 +74,20 @@ public class ResultListController {
 
     private BorderPane createResultCard(ResultResponse result) {
         Label titleLabel = new Label(result.getTest().getTitle());
-        titleLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: white; -fx-font-size: 20");
+        titleLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: white; -fx-font-size: 22");
+
+        Label usernameLabel = new Label(result.getUser().getUsername());
+        usernameLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: white; -fx-font-size: 20");
 
         Label markLabel = new Label("Оцінка: " + result.getMark());
-        markLabel.setStyle("-fx-text-fill: white; -fx-font-size: 16");
+        markLabel.setStyle("-fx-text-fill: white; -fx-font-size: 18");
 
         Label createDateLabel = new Label("Дата створення: " + result.getCreate_date().toString());
-        createDateLabel.setStyle("-fx-text-fill: white; -fx-font-size: 16");
+        createDateLabel.setStyle("-fx-text-fill: white; -fx-font-size: 18");
 
 
         BorderPane resultCard = new BorderPane();
-        VBox labelVbox = new VBox(titleLabel, createDateLabel);
+        VBox labelVbox = new VBox(titleLabel, usernameLabel, createDateLabel);
 
         BorderPane.setAlignment(markLabel, Pos.CENTER_RIGHT);
 

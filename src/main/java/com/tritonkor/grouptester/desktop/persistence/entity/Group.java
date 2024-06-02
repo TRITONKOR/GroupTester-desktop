@@ -7,13 +7,21 @@ import java.util.UUID;
 public class Group extends Entity{
     private String name;
     private String code;
+    private Boolean readyToTesting;
+    private Boolean canApplyNewUsers;
+    private Test test;
     private Map<User, Boolean> users;
+    private Map<User, Mark> results;
 
-    public Group(UUID id, String name, String code) {
+    public Group(UUID id, String name, String code, Boolean readyToTesting, Boolean canApplyNewUsers, Test test) {
         super(id);
         this.name = name;
         this.code = code;
+        this.readyToTesting = readyToTesting;
+        this.canApplyNewUsers = canApplyNewUsers;
+        this.test = test;
         this.users = new HashMap<>();
+        this.results = new HashMap<>();
     }
 
     public Group() {
@@ -21,7 +29,7 @@ public class Group extends Entity{
     }
 
     public static GroupBuilderId builder() {
-        return id -> name -> code -> () -> new Group(id, name, code);
+        return id -> name -> code -> readyToTesting -> canApplyNewUsers -> test -> () -> new Group(id, name, code, readyToTesting, canApplyNewUsers, test);
     }
 
     public interface GroupBuilderId {
@@ -33,7 +41,19 @@ public class Group extends Entity{
     }
 
     public interface GroupBuilderCode {
-        GroupBuilder code(String code);
+        GroupBuilderReadyToTesting code(String code);
+    }
+
+    public interface GroupBuilderReadyToTesting {
+        GroupBuilderCanApplyNewUsers readyToTesting(Boolean readyToTesting);
+    }
+
+    public interface GroupBuilderCanApplyNewUsers {
+        GroupBuilderTest canApplyNewUsers(Boolean canApplyNewUsers);
+    }
+
+    public interface GroupBuilderTest {
+        GroupBuilder test(Test test);
     }
 
     public interface GroupBuilder {
@@ -48,6 +68,14 @@ public class Group extends Entity{
         return code;
     }
 
+    public Test getTest() {
+        return test;
+    }
+
+    public void setTest(Test test) {
+        this.test = test;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -56,20 +84,19 @@ public class Group extends Entity{
         this.code = code;
     }
 
+    public Boolean getCanApplyNewUsers() {
+        return canApplyNewUsers;
+    }
+
+    public Boolean getReadyToTesting() {
+        return readyToTesting;
+    }
+
     public Map<User, Boolean> getUsers() {
         return users;
     }
 
-    public void addUser(User user) {
-        users.put(user, false);
-    }
-
-    public void removeUser(User user) {
-        if(users.containsKey(user)) {
-            users.remove(user);
-        }
-        else {
-            System.out.println("The user is not in the group");
-        }
+    public Map<User, Mark> getResults() {
+        return results;
     }
 }

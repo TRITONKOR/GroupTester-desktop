@@ -1,6 +1,10 @@
 package com.tritonkor.grouptester.desktop.presentation.controller.question;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.tritonkor.grouptester.desktop.domain.AuthorizeService;
+import com.tritonkor.grouptester.desktop.domain.QuestionService;
+import com.tritonkor.grouptester.desktop.domain.TestService;
+import com.tritonkor.grouptester.desktop.net.request.question.DeleteQuestionRequest;
 import com.tritonkor.grouptester.desktop.persistence.entity.Question;
 import com.tritonkor.grouptester.desktop.persistence.entity.Test;
 import com.tritonkor.grouptester.desktop.presentation.controller.MainController;
@@ -18,6 +22,8 @@ import org.springframework.stereotype.Component;
 public class QuestionListController {
     @Autowired
     private MainController mainController;
+    @Autowired
+    private CreateQuestionController createQuestionController;
 
     @FXML
     private ScrollPane questionsScrollPane;
@@ -26,15 +32,13 @@ public class QuestionListController {
     @FXML
     private VBox vboxContainer;
 
-    private Test currentTest;
-
     @FXML
-    public void initialize() throws JsonProcessingException {
-        updateTestList();
+    public void initialize() {
+        updateQuestionList();
     }
 
-    public void updateTestList() throws JsonProcessingException {
-        List<Question> questions = currentTest.getQuestions();
+    public void updateQuestionList() {
+        List<Question> questions = TestService.getCurrentTest().getQuestions();
 
         vboxContainer.getChildren().clear();
         vboxContainer.getChildren().addAll(questions.stream().map(this::createQuestionCard).toList());
@@ -42,19 +46,22 @@ public class QuestionListController {
 
     private BorderPane createQuestionCard(Question question) {
         Label textLabel = new Label(question.getText());
-        textLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: white; -fx-font-size: 20");
+        textLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: white; -fx-font-size: 22");
 
         Button deleteButton = new Button("Видалити");
-        Button manageButton = new Button("Редагувати");
+        Button updateButton = new Button("Редагувати");
 
         deleteButton.getStyleClass().add("miniButton");
-        manageButton.getStyleClass().add("miniButton");
+        updateButton.getStyleClass().add("miniButton");
+
+        deleteButton.setOnAction(event -> handleDeleteQuestion(question));
+        updateButton.setOnAction(event -> handleUpdateQuestion(question));
 
         deleteButton.setStyle("-fx-background-color: #41424A");
 
         BorderPane testCard = new BorderPane();
-        VBox buttonVbox = new VBox(manageButton, deleteButton);
-        buttonVbox.setStyle("-fx-spacing: 20; -fx-alignment: center");
+        VBox buttonVbox = new VBox(updateButton, deleteButton);
+        buttonVbox.setStyle("-fx-spacing: 10; -fx-alignment: center");
 
         testCard.setLeft(textLabel);
         testCard.setRight(buttonVbox);
@@ -68,17 +75,28 @@ public class QuestionListController {
     }
 
     @FXML
-    public void handlerCreateQuestion() {
+    public void handleCreateQuestion() {
         String fxmlFile = "view/question/CreateQuestion.fxml";
 
         mainController.switchPage(fxmlFile);
     }
 
-    public Test getCurrentTest() {
-        return currentTest;
+    public void handleDeleteQuestion(Question question) {
+        DeleteQuestionRequest request = DeleteQuestionRequest.builder()
+                .questionId(question.getId())
+                .userId(AuthorizeService.getCurrentUser().getId())
+                .build();
+
+        TestService.deleteQuestion(request);
+        TestService.getCurrentTest().getQuestions().remove(question);
+        updateQuestionList();
     }
 
-    public void setCurrentTest(Test currentTest) {
-        this.currentTest = currentTest;
+    public void handleUpdateQuestion(Question question) {
+
+        QuestionService.setCurrentQuestion(question);
+
+        String fxmlFile = "view/question/UpdateQuestion.fxml";
+        mainController.switchPage(fxmlFile);
     }
 }

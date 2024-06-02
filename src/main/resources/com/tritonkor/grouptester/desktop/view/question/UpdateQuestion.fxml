@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<BorderPane xmlns="http://javafx.com/javafx"
+  xmlns:fx="http://javafx.com/fxml"
+  fx:controller="com.tritonkor.grouptester.desktop.presentation.controller.question.UpdateQuestionController"
+  prefHeight="600.0" prefWidth="800.0">
+
+  <center>
+    <VBox alignment="CENTER" spacing="20">
+      <TextField fx:id="questionTextField" promptText="Введіть текст питання"
+        styleClass="transparent-text-field" style="-fx-font-size: 18" maxWidth="500"/>
+      <HBox alignment="CENTER">
+        <AnchorPane fx:id="photoAnchorPane" prefHeight="350" prefWidth="450" style="-fx-background-color: #2C2C2C; -fx-background-radius: 10;">
+          <ImageView fx:id="photoImageView" fitHeight="${photoAnchorPane.height}" fitWidth="${photoAnchorPane.width}"
+            onMouseClicked="#handlePhotoImageClick"/>
+        </AnchorPane>
+      </HBox>
+
+      <VBox alignment="CENTER" spacing="10">
+        <HBox alignment="CENTER" spacing="10">
+          <HBox fx:id="answerBox1" style="-fx-background-color: #F44336; -fx-padding: 20; -fx-background-radius: 10;"
+            alignment="CENTER" spacing="5">
+            <TextField text="Питання 1" styleClass="transparent-text-field"/>
+            <RadioButton />
+          </HBox>
+          <HBox fx:id="answerBox2" style="-fx-background-color: #2196F3; -fx-padding: 20; -fx-background-radius: 10;"
+            alignment="CENTER" spacing="5">
+            <TextField text="Питання 2" styleClass="transparent-text-field"/>
+            <RadioButton />
+          </HBox>
+        </HBox>
+        <HBox alignment="CENTER" spacing="10">
+          <HBox fx:id="answerBox3" style="-fx-background-color: #FFC107; -fx-padding: 20; -fx-background-radius: 10;"
+            alignment="CENTER" spacing="5">
+            <TextField text="Питання 3" styleClass="transparent-text-field"/>
+            <RadioButton />
+          </HBox>
+          <HBox fx:id="answerBox4" style="-fx-background-color: #4CAF50; -fx-padding: 20; -fx-background-radius: 10;"
+            alignment="CENTER" spacing="5">
+            <TextField text="Питання 4" styleClass="transparent-text-field"/>
+            <RadioButton />
+          </HBox>
+        </HBox>
+      </VBox>
+      <Button text="Зберегти" styleClass="miniButton" style="-fx-font-size: 18; -fx-start-margin: 10;" onAction="#handleSave" BorderPane.alignment="CENTER"/>
+    </VBox>
+  </center>
+</BorderPane>

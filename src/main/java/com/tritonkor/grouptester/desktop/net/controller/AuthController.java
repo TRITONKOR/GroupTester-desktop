@@ -2,6 +2,7 @@ package com.tritonkor.grouptester.desktop.net.controller;
 
 import static com.tritonkor.grouptester.desktop.net.ApiUrls.AUTH_USER_URL;
 import static com.tritonkor.grouptester.desktop.net.ApiUrls.REGISTER_USER_URL;
+import static com.tritonkor.grouptester.desktop.net.ApiUrls.UNAUTH_USER_URL;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -14,6 +15,10 @@ import org.json.JSONObject;
 public class AuthController extends RequestController{
     public static HttpResponse<String> register(String registerRequestJson) {
         return postRequest(REGISTER_USER_URL, registerRequestJson);
+    }
+
+    public static HttpResponse<String> unauthorize(String unauthorizeRequestJson) {
+        return postRequest(UNAUTH_USER_URL, unauthorizeRequestJson);
     }
 
     public static HttpResponse<String> authenticate(String username, String password) {

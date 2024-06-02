@@ -55,10 +55,6 @@ public class RequestController {
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            String responseBody = response.body();
-
-            System.out.println("Response body: " + responseBody);
-
             return response;
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();

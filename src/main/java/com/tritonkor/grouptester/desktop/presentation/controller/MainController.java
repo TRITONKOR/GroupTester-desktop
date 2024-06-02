@@ -2,13 +2,22 @@ package com.tritonkor.grouptester.desktop.presentation.controller;
 
 import static com.tritonkor.grouptester.desktop.App.springContext;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tritonkor.grouptester.desktop.App;
 import com.tritonkor.grouptester.desktop.domain.AuthorizeService;
+import com.tritonkor.grouptester.desktop.domain.TagService;
+import com.tritonkor.grouptester.desktop.persistence.entity.Tag;
+import com.tritonkor.grouptester.desktop.persistence.entity.Test;
 import com.tritonkor.grouptester.desktop.presentation.util.SpringFXMLLoader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.http.HttpResponse;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -50,7 +59,7 @@ public class MainController {
                 case "Групи" -> switchPage(Path.of("view", "group", "JoinGroup.fxml").toString());
                 case "Бібліотека" ->
                         switchPage(Path.of("view", "test", "TestList.fxml").toString());
-                case "Звіти" -> switchPage(Path.of("view", "report", "ReportList.fxml").toString());
+                case "Звіти" -> switchPage(Path.of("view", "result", "ResultListByGroup.fxml").toString());
                 case "Результати" -> switchPage(Path.of("view", "result", "ResultList.fxml").toString());
                 default -> System.err.println(STR."Unknown selection: \{selectedButton.getText()}");
             }
@@ -67,11 +76,10 @@ public class MainController {
         }
     }
 
-    public void setPage(String fxmlFile) {
+    public void setPage(String fxmlFile, Scene scene) {
         try {
             var fxmlLoader = new SpringFXMLLoader(springContext);
             BorderPane parent = (BorderPane) fxmlLoader.load(App.class.getResource(fxmlFile));
-            Scene scene = titleLabel.getScene();
             scene.setRoot(parent);
         } catch (IOException e) {
             e.printStackTrace();

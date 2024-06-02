@@ -56,6 +56,6 @@ public class CreateGroupController {
         GroupService.setCurrentGroup(group);
 
         String fxmlFile = "view/group/ManageGroup-teacher.fxml";
-        mainController.setPage(fxmlFile);
+        mainController.setPage(fxmlFile, groupNameField.getScene());
     }
 }

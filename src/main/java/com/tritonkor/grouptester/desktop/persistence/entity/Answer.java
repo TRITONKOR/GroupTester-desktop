@@ -85,4 +85,14 @@ public class Answer extends Entity {
     public UUID getQuestionId() {
         return questionId;
     }
+
+    @Override
+    public String toString() {
+        return "Answer{" +
+                "questionId=" + questionId +
+                ", question=" + question +
+                ", text='" + text + '\'' +
+                ", isCorrect=" + isCorrect +
+                '}';
+    }
 }

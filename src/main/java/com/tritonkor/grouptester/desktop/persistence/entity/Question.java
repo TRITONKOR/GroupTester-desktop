@@ -2,20 +2,24 @@ package com.tritonkor.grouptester.desktop.persistence.entity;
 
 import java.util.List;
 import java.util.UUID;
+import lombok.Getter;
 
 /**
  * The {@code Question} class represents a question with its associated properties.
  */
+
 public class Question extends Entity {
 
     private String text;
+    private byte[] image;
     private List<Answer> answers;
     private UUID testId;
     private Test test;
 
-    public Question(UUID id, String text, List<Answer> answers, UUID testId, Test test) {
+    public Question(UUID id, String text, byte[] image, List<Answer> answers, UUID testId, Test test) {
         super(id);
         this.text = text;
+        this.image = image;
         this.answers = answers;
         this.testId = testId;
         this.test = test;
@@ -31,8 +35,8 @@ public class Question extends Entity {
      * @return A {@code QuestionBuilderId} instance.
      */
     public static QuestionBuilderId builder() {
-        return id -> answers -> testId -> test -> content -> () -> new Question(id, answers, testId, test,
-                content);
+        return id -> text -> image -> answers -> testId -> test  -> () -> new Question(id, text, image, answers,
+                testId, test);
     }
 
     /**
@@ -45,7 +49,12 @@ public class Question extends Entity {
 
     public interface QuestionBuilderText {
 
-        QuestionBuilderAnswers text(String text);
+        QuestionBuilderImage text(String text);
+    }
+
+    public interface QuestionBuilderImage {
+
+        QuestionBuilderAnswers image(byte[] image);
     }
 
     public interface QuestionBuilderAnswers {
@@ -75,11 +84,23 @@ public class Question extends Entity {
         return text;
     }
 
-    public UUID getTestId() {
-        return testId;
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     public List<Answer> getAnswers() {
         return answers;
+    }
+
+    public UUID getTestId() {
+        return testId;
+    }
+
+    public Test getTest() {
+        return test;
     }
 }

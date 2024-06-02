@@ -14,5 +14,6 @@ public class QuestionResponse {
     private String id;
     private String testId;
     private String text;
+    private byte[] image;
     private List<AnswerResponse> answers;
 }

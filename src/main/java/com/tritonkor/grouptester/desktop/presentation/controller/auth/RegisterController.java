@@ -129,18 +129,6 @@ public class RegisterController {
     @FXML
     private void handleAuthenticateHyperlink(ActionEvent event) {
         try {
-            /*
-            BorderPane authenticateParent = FXMLLoader.load(App.class.getResource(
-                    "view/authorize/authenticate.fxml"));
-            Scene scene = authenticateHyperLink.getScene();
-            scene.setRoot(authenticateParent);
-
-
-            ImageView backgroundImage = (ImageView) authenticateParent.lookup("#backgroundImage");
-
-            backgroundImage.fitWidthProperty().bind(authenticateParent.widthProperty());
-            backgroundImage.fitHeightProperty().bind(authenticateParent.heightProperty());
-             */
             var fxmlLoader = new SpringFXMLLoader(springContext);
             var mainFxmlResource = App.class.getResource(
                     "view/authorize/authenticate.fxml");

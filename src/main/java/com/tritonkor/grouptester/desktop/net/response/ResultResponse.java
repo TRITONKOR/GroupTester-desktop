@@ -15,6 +15,8 @@ import lombok.NoArgsConstructor;
 public class ResultResponse {
     private UUID id;
     private TestResponse test;
+    private UserResponse user;
+    private String groupCode;
     private Mark mark;
     private LocalDateTime create_date;
 }

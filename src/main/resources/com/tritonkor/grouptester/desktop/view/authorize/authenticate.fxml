@@ -9,7 +9,7 @@
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
   fx:controller="com.tritonkor.grouptester.desktop.presentation.controller.auth.AuthenticateController"
-  prefHeight="500.0" prefWidth="700.0">
+  prefHeight="600.0" prefWidth="800.0">
 
   <!-- Заднє зображення -->
   <ImageView fx:id="backgroundImage">
@@ -22,7 +22,7 @@
     <StackPane style="-fx-background-color: rgba(0, 0, 0, 0.5);">
       <VBox alignment="CENTER" spacing="10.0"
         style="-fx-background-color: #212121; -fx-background-radius: 10; -fx-padding: 20;"
-        maxWidth="450.0" maxHeight="320">
+        maxWidth="500.0" maxHeight="350">
         <children>
           <Label text="Авторизація" fx:id="mainLabel" styleClass="mainLabel"/>
           <TextField fx:id="loginField" promptText="Логін" styleClass="textField"/>
@@ -30,8 +30,8 @@
           <Button text="Увійти" styleClass="secondaryButton" onAction="#handleAuthenticateUser"/>
           <HBox alignment="CENTER" spacing="5.0">
             <children>
-              <Label text="Немає акаунту?" fx:id="notHaveAccountLabel" textFill="white"/>
-              <Hyperlink text="Зареєструватись" fx:id="registerHyperLink"
+              <Label text="Немає акаунту?" fx:id="notHaveAccountLabel" textFill="white" style="-fx-font-size: 16"/>
+              <Hyperlink text="Зареєструватись" fx:id="registerHyperLink" style="-fx-font-size: 16"
                 onAction="#handleRegisterHyperlink"/>
             </children>
           </HBox>

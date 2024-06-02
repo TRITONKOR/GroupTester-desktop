@@ -11,7 +11,7 @@
 <?import java.lang.String?>
 <BorderPane xmlns:fx="http://javafx.com/fxml"
   fx:controller="com.tritonkor.grouptester.desktop.presentation.controller.auth.RegisterController"
-  prefHeight="500.0" prefWidth="700.0">
+  prefHeight="600.0" prefWidth="800.0">
 
   <!-- Заднє зображення -->
   <ImageView fx:id="backgroundImage">
@@ -23,12 +23,12 @@
   <center>
     <StackPane style="-fx-background-color: rgba(0, 0, 0, 0.5);">
       <VBox alignment="CENTER" spacing="20.0"
-        style="-fx-background-color: #212121;  -fx-padding: 20;" maxWidth="450.0" maxHeight="320">
+        style="-fx-background-color: #212121;  -fx-padding: 20; -fx-background-radius: 10;" maxWidth="600.0" maxHeight="400">
         <children>
           <Label text="Реєстрація" fx:id="mainLabel" styleClass="mainLabel"/>
           <HBox spacing="20" alignment="CENTER">
             <children>
-              <ImageView fitHeight="100.0" fx:id="avatarImage" fitWidth="100.0" onMouseClicked="#handleAvatarImageClick">
+              <ImageView fitHeight="150.0" fx:id="avatarImage" fitWidth="150.0" onMouseClicked="#handleAvatarImageClick">
                 <image>
                   <Image url="@avatar.png"/>
                 </image>
@@ -38,6 +38,7 @@
                   <TextField fx:id="loginField" promptText="Логін" styleClass="textField"/>
                   <PasswordField fx:id="passwordField" promptText="Пароль" styleClass="textField"/>
                   <TextField fx:id="emailField" promptText="Пошта" styleClass="textField"/>
+                  <DatePicker fx:id="birthdayDatePicker" styleClass="date-picker"/>
                   <ComboBox fx:id="roleComboBox" promptText="Роль" styleClass="comboBox"/>
                 </children>
               </VBox>
@@ -46,8 +47,8 @@
           <Button text="Зареєструватись" styleClass="secondaryButton" onMouseClicked="#handleRegisterUser"/>
           <HBox alignment="CENTER" spacing="5.0">
             <children>
-              <Label text="Вже є аккаунт?" textFill="white"/>
-              <Hyperlink text="Увійти" fx:id="authenticateHyperLink"
+              <Label text="Вже є аккаунт?" textFill="white" style="-fx-font-size: 16"/>
+              <Hyperlink text="Увійти" fx:id="authenticateHyperLink" style="-fx-font-size: 16"
                 onAction="#handleAuthenticateHyperlink"/>
             </children>
           </HBox>

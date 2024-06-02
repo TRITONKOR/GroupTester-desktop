@@ -3,6 +3,7 @@ package com.tritonkor.grouptester.desktop.presentation.controller.group;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.tritonkor.grouptester.desktop.domain.AuthorizeService;
 import com.tritonkor.grouptester.desktop.domain.GroupService;
 import com.tritonkor.grouptester.desktop.net.request.group.CreateGroupRequest;
@@ -31,6 +32,7 @@ public class JoinGroupController {
     static {
         SimpleModule module = new SimpleModule();
         module.addKeyDeserializer(User.class, new UserKeyDeserializer());
+        objectMapper.registerModule(new JavaTimeModule());
         objectMapper.registerModule(module);
     }
 
@@ -54,6 +56,6 @@ public class JoinGroupController {
         GroupService.setCurrentGroup(group);
 
         String fxmlFile = "view/group/ManageGroup-student.fxml";
-        mainController.setPage(fxmlFile);
+        mainController.setPage(fxmlFile, groupCodeField.getScene());
     }
 }

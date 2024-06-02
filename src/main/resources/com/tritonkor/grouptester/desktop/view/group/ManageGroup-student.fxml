@@ -10,15 +10,15 @@
   xmlns:fx="http://javafx.com/fxml"
   style="-fx-background-color: #212121;"
   fx:controller="com.tritonkor.grouptester.desktop.presentation.controller.group.ManageGroupController"
-  prefHeight="400.0" prefWidth="600.0">
+  prefHeight="600.0" prefWidth="800.0">
   <center>
     <VBox alignment="CENTER" spacing="20.0"
       style="-fx-padding: 20;">
       <children>
-        <Label text="Група: " fx:id="groupLabel" styleClass="mainLabel" style="-fx-font-size: 30;"/>
+        <Label fx:id="groupLabel" styleClass="mainLabel" style="-fx-font-size: 30;"/>
         <HBox spacing="20" alignment="CENTER">
-          <Label text="Код групи: " fx:id="codeLabel" style="-fx-font-size: 18; -fx-text-fill: #FFFFFF;"/>
-          <Label text="Тест: Дота 2"  style="-fx-font-size: 18; -fx-text-fill: #FFFFFF;"/>
+          <Label fx:id="codeLabel" style="-fx-font-size: 20; -fx-text-fill: #FFFFFF;"/>
+          <Label fx:id="testTitleLabel" style="-fx-font-size: 20; -fx-text-fill: #FFFFFF;"/>
         </HBox>
         <ScrollPane fx:id="userScrollPane"  prefHeight="700" styleClass="scroll-pane" VBox.vgrow="ALWAYS">
           <VBox fx:id="vboxContainer" spacing="50" style="-fx-padding: 30,40,0,0;" prefWidth="${userScrollPane.width}">
@@ -28,7 +28,8 @@
         <HBox prefWidth="Infinity">
           <Button text="Покинути групу" styleClass="secondaryButton" style="-fx-background-color: #41424A" onAction="#handleLeaveGroup"/>
           <Region HBox.hgrow="ALWAYS" />
-          <Button text="Готовий" styleClass="secondaryButton" style="-fx-background-color: #5E6DBB" />
+          <Button text="Готовий" fx:id="readyButton" styleClass="secondaryButton" style="-fx-background-color: #5E6DBB"
+          onAction="#handleChangeStatus"/>
         </HBox>
       </children>
 

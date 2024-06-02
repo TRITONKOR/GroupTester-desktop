@@ -41,4 +41,9 @@ public class Tag extends Entity{
     public String getName() {
         return name;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

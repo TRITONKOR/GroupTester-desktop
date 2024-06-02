@@ -14,7 +14,7 @@
   fx:id="root"
   fx:controller="com.tritonkor.grouptester.desktop.presentation.controller.MainController"
   style="-fx-background-color: #212121;"
-  prefHeight="400.0" prefWidth="600.0">
+  prefHeight="600.0" prefWidth="800.0">
   <fx:define>
     <ToggleGroup fx:id="toggleGroup" />
   </fx:define>

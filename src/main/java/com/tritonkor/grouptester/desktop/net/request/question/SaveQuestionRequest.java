@@ -1,6 +1,7 @@
 package com.tritonkor.grouptester.desktop.net.request.question;
 
 import com.tritonkor.grouptester.desktop.net.request.Request;
+import com.tritonkor.grouptester.desktop.net.response.AnswerResponse;
 import com.tritonkor.grouptester.desktop.persistence.entity.Answer;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -16,7 +17,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SaveQuestionRequest implements Request {
-    @NotNull
     private UUID id;
 
     @NotNull
@@ -28,6 +28,8 @@ public class SaveQuestionRequest implements Request {
     @NotNull
     @NotBlank
     private String text;
+
+    private byte[] image;
 
     @NotNull
     private List<Answer> answers;

@@ -1,7 +1,5 @@
 package com.tritonkor.grouptester.desktop.domain;
 
-import static com.tritonkor.grouptester.desktop.net.ApiUrls.AUTH_USER_URL;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,34 +7,25 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.tritonkor.grouptester.desktop.net.controller.AuthController;
 import com.tritonkor.grouptester.desktop.net.request.RegisterRequest;
+import com.tritonkor.grouptester.desktop.net.request.UnauthorizeRequest;
 import com.tritonkor.grouptester.desktop.persistence.entity.User;
+import jakarta.annotation.PreDestroy;
 import java.net.http.HttpResponse;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthorizeService {
+public class AuthorizeService extends com.tritonkor.grouptester.desktop.domain.Service {
 
     private static User currentUser;
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public static boolean register(RegisterRequest request) {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.registerModule(new JavaTimeModule());
+        AuthController.register(requestToJson(request));
 
-            ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
+        authenticate(request.getUsername(), request.getPassword());
 
-            String registerRequestJson = ow.writeValueAsString(request);
-            AuthController.register(registerRequestJson);
-
-            authenticate(request.getUsername(), request.getPassword());
-
-            return true;
-
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+        return true;
     }
 
     public static HttpResponse<String> authenticate(String username, String password) {
@@ -56,6 +45,17 @@ public class AuthorizeService {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    @PreDestroy
+    public void unauthorize() {
+        if (currentUser != null) {
+            UnauthorizeRequest request = UnauthorizeRequest.builder()
+                    .userId(currentUser.getId())
+                    .build();
+
+            AuthController.unauthorize(requestToJson(request));
         }
     }
 

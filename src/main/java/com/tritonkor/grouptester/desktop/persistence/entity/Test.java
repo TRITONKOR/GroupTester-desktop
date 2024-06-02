@@ -16,16 +16,18 @@ public class Test extends Entity {
     private List<Tag> tags;
     private UUID ownerId;
     private User owner;
+    private int time;
     private List<Question> questions;
     private LocalDateTime createDate;
 
-    public Test(UUID id, String title, UUID ownerId, User owner,
+    public Test(UUID id, String title, UUID ownerId, User owner, int time,
             List<Question> questions, List<Tag> tags, LocalDateTime createDate) {
         super(id);
         this.title = title;
         this.tags = tags;
         this.ownerId = ownerId;
         this.owner = owner;
+        this.time = time;
         this.questions = questions;
         this.createDate = createDate;
     }
@@ -40,9 +42,9 @@ public class Test extends Entity {
      * @return A {@code TestBuilderId} instance.
      */
     public static TestBuilderId builder() {
-        return id -> title -> ownerId -> owner -> questions -> tags -> createDate -> () -> new Test(
+        return id -> title -> ownerId -> owner -> time -> questions -> tags -> createDate -> () -> new Test(
                 id, title,
-                ownerId, owner, questions, tags, createDate);
+                ownerId, owner, time, questions, tags, createDate);
     }
 
     /**
@@ -69,7 +71,12 @@ public class Test extends Entity {
 
     public interface TestBuilderOwner {
 
-        TestBuilderQuestions owner(User owner);
+        TestBuilderTime owner(User owner);
+    }
+
+    public interface TestBuilderTime {
+
+        TestBuilderQuestions time(int time);
     }
 
     public interface TestBuilderQuestions {
@@ -128,6 +135,10 @@ public class Test extends Entity {
         return createDate;
     }
 
+    public int getTime() {
+        return time;
+    }
+
     /**
      * Computes a hash code for this test based on its title.
      *
@@ -136,5 +147,18 @@ public class Test extends Entity {
     @Override
     public int hashCode() {
         return Objects.hash(title);
+    }
+
+    @Override
+    public String toString() {
+        return "Test{" +
+                "title='" + title + '\'' +
+                ", tags=" + tags +
+                ", ownerId=" + ownerId +
+                ", owner=" + owner +
+                ", time=" + time +
+                ", questions=" + questions +
+                ", createDate=" + createDate +
+                '}';
     }
 }
