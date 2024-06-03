@@ -53,7 +53,6 @@ public class ChooseTestController {
             String jsonResponse = response.body();
             tests = objectMapper.readValue(jsonResponse, new TypeReference<List<Test>>() {});
         } else {
-            // Обробка помилки або повернення порожнього списку
             throw new RuntimeException("Failed to fetch tests: " + response.statusCode());
         }
 

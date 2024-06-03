@@ -36,6 +36,12 @@ public class JoinGroupController {
         objectMapper.registerModule(module);
     }
 
+    /**
+     * Handles the action of joining a group. It sends a join request to the server
+     * and updates the current group information upon successful response.
+     *
+     * @throws IOException if an I/O error occurs during the process.
+     */
     @FXML
     private void handleJoinGroup() throws IOException {
         JoinGroupRequest request = JoinGroupRequest.builder()
@@ -50,7 +56,6 @@ public class JoinGroupController {
             String jsonResponse = response.body();
             group = objectMapper.readValue(jsonResponse, new TypeReference<Group>() {});
         } else {
-            // Обробка помилки або повернення порожнього списку
             throw new RuntimeException("Failed to fetch group: " + response.statusCode());
         }
         GroupService.setCurrentGroup(group);

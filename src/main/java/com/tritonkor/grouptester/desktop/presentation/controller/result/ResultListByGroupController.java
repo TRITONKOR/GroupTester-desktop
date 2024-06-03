@@ -54,7 +54,6 @@ public class ResultListByGroupController {
             String jsonResponse = response.body();
             results = objectMapper.readValue(jsonResponse, new TypeReference<List<ResultResponse>>() {});
         } else {
-            // Обробка помилки або повернення порожнього списку
             throw new RuntimeException("Failed to fetch results: " + response.statusCode());
         }
 

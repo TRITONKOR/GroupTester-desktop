@@ -13,12 +13,17 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import org.controlsfx.control.CheckComboBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * Controller for creating a new test.
+ */
 @Component
 public class CreateTestController {
 
@@ -35,6 +40,10 @@ public class CreateTestController {
     private List<Tag> tags = new ArrayList<>();
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
+    /**
+     * Initializes the controller after its root element has been completely processed.
+     * Fetches the list of available tags and populates the tag selection combo box.
+     */
     @FXML
     public void initialize() {
         HttpResponse<String> response = TagService.getAllTags();
@@ -46,7 +55,6 @@ public class CreateTestController {
                 tags = objectMapper.readValue(jsonResponse, new TypeReference<List<Tag>>() {
                 });
             } else {
-                // Обробка помилки або повернення порожнього списку
                 throw new RuntimeException("Failed to fetch tests: " + response.statusCode());
             }
         } catch (JsonProcessingException e) {
@@ -56,11 +64,25 @@ public class CreateTestController {
         }
     }
 
+    /**
+     * Handles the event of creating a new test.
+     * Validates input fields and sends a request to create the test.
+     * Navigates to the test list view upon successful creation.
+     */
     @FXML
     public void handleCreateTest() {
         String testTitle = testTitleField.getText();
         Integer time = timeSpinner.getValue();
         List<Tag> selectedTags = new ArrayList<>(tagCheckComboBox.getCheckModel().getCheckedItems());
+
+        if (testTitle.isBlank() || time == null || selectedTags.isEmpty()) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Не вдалось створити тест");
+            alert.setHeaderText(null);
+            alert.setContentText("Не всі поля були заповнені");
+            alert.showAndWait();
+            return;
+        }
 
 
         CreateTestRequest request = CreateTestRequest.builder()

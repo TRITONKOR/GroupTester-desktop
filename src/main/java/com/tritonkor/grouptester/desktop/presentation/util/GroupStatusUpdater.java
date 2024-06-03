@@ -3,6 +3,7 @@ package com.tritonkor.grouptester.desktop.presentation.util;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.tritonkor.grouptester.desktop.domain.AuthorizeService;
@@ -30,6 +31,9 @@ import javafx.scene.control.Alert.AlertType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * Component responsible for updating group status in the GroupTester desktop application.
+ */
 @Component
 public class GroupStatusUpdater {
 
@@ -52,6 +56,9 @@ public class GroupStatusUpdater {
         this.manageGroupController = manageGroupController;
     }
 
+    /**
+     * Starts the process of updating group status.
+     */
     public void startUpdating() {
         if (scheduler.isShutdown() || scheduler.isTerminated()) {
             scheduler = Executors.newScheduledThreadPool(1);
@@ -59,6 +66,9 @@ public class GroupStatusUpdater {
         scheduler.scheduleAtFixedRate(this::updateGroupStatus, 0, 2, TimeUnit.SECONDS);
     }
 
+    /**
+     * Handles actions to be taken when the program is closing.
+     */
     @PreDestroy
     public void programClosing() {
         if (AuthorizeService.getCurrentUser().getRole().equals(Role.STUDENT)) {
@@ -80,6 +90,9 @@ public class GroupStatusUpdater {
         stopUpdating();
     }
 
+    /**
+     * Stops the process of updating group status.
+     */
     public void stopUpdating() {
         if (Objects.nonNull(scheduler)) {
             scheduler.shutdown();
@@ -93,45 +106,47 @@ public class GroupStatusUpdater {
         }
     }
 
-    private void checkGroupExist() {
-        if (Objects.isNull(GroupService.getCurrentGroup())) {
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("Група не існує");
-            alert.setHeaderText(null);
-            alert.setContentText("Даної групи не існує");
-            alert.showAndWait();
-
-            String fxml = "view/test/main_student.fxml";
-            mainController.setPage(fxml, manageGroupController.readyButton.getScene());
-        }
-    }
-
+    /**
+     * Updates the group status by making requests to the backend.
+     */
     private void updateGroupStatus() {
-        checkGroupExist();
-
         UUID groupId = GroupService.getCurrentGroup().getId();
         Map<String, String> filters = new HashMap<>();
         filters.put("groupId", groupId.toString());
 
         HttpResponse<String> response = GroupService.getGroupStatus(filters);
         try {
-            Group group;
             if (response.statusCode() == 200) {
                 String jsonResponse = response.body();
-                group = objectMapper.readValue(jsonResponse, new TypeReference<Group>() {
-                });
+
+                try {
+                    Group group = objectMapper.readValue(jsonResponse, new TypeReference<Group>() {
+                    });
+                    GroupService.setCurrentGroup(group);
+                } catch (MismatchedInputException e) {
+                    stopUpdating();
+
+                    Alert alert = new Alert(AlertType.INFORMATION);
+                    alert.setTitle("Група не існує");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Даної групи не існує");
+                    alert.showAndWait();
+
+
+                    String fxml = "view/test/main_student.fxml";
+                    mainController.setPage(fxml, manageGroupController.readyButton.getScene());
+                }
             } else {
                 throw new RuntimeException("Failed to fetch group: " + response.statusCode());
             }
-            if (group != null) {
+            if (GroupService.getCurrentGroup() != null) {
                 Platform.runLater(() -> {
-                    GroupService.setCurrentGroup(group);
-                    if (!group.getCanApplyNewUsers() && AuthorizeService.getCurrentUser().getRole().equals(Role.TEACHER)) {
+                    if (!GroupService.getCurrentGroup().getCanApplyNewUsers() && AuthorizeService.getCurrentUser().getRole().equals(Role.TEACHER)) {
                         manageGroupController.isTesting = true;
                         manageGroupController.runTestButton.setVisible(false);
                         manageGroupController.chooseTestButton.setVisible(false);
                     }
-                    updateGroupData(group);
+                    updateGroupData(GroupService.getCurrentGroup());
                 });
             }
         } catch (JsonProcessingException e) {
@@ -139,15 +154,10 @@ public class GroupStatusUpdater {
         }
     }
 
-    private void updateTestingData(Group group) {
-        try {
-            manageGroupController.updateUserList();
-            manageGroupController.updateGroupData(group);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
+    /**
+     * Updates the data of the current group.
+     * @param group The updated group object.
+     */
     private void updateGroupData(Group group) {
         try {
             if (Objects.nonNull(manageGroupController.runTestButton)) {
@@ -177,6 +187,11 @@ public class GroupStatusUpdater {
         }
     }
 
+    /**
+     * Checks if all users in the group are ready.
+     * @param group The group to check.
+     * @return True if all users are ready, false otherwise.
+     */
     private boolean userChecker(Group group) {
         return group.getUsers().values().stream().allMatch(Boolean::booleanValue);
     }

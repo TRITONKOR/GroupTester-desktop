@@ -65,6 +65,11 @@ public class ManageGroupController {
 
     public Boolean isTesting;
 
+    /**
+     * Initializes the controller by setting up initial states and starting group status updates.
+     *
+     * @throws JsonProcessingException if an error occurs during JSON processing.
+     */
     @FXML
     public void initialize() throws JsonProcessingException {
         isTesting = false;
@@ -73,6 +78,11 @@ public class ManageGroupController {
         groupStatusUpdater.startUpdating();
     }
 
+    /**
+     * Updates the UI with the current group data.
+     *
+     * @param group the current group whose data will be displayed.
+     */
     public void updateGroupData(Group group) {
         groupLabel.setText("Група: " + group.getName());
         codeLabel.setText("Код групи: " + group.getCode());
@@ -83,6 +93,9 @@ public class ManageGroupController {
         }
     }
 
+    /**
+     * Handles the action of leaving the group.
+     */
     @FXML
     public void handleLeaveGroup() {
         LeaveGroupRequest request = LeaveGroupRequest.builder()
@@ -106,6 +119,9 @@ public class ManageGroupController {
         }
     }
 
+    /**
+     * Handles the action of deleting the group.
+     */
     @FXML
     public void handleDeleteGroup() {
         groupStatusUpdater.stopUpdating();
@@ -130,6 +146,9 @@ public class ManageGroupController {
         }
     }
 
+    /**
+     * Updates the user list in the UI based on their readiness or test status.
+     */
     public void updateUserList() {
         Map<User, Boolean> users = GroupService.getCurrentGroup().getUsers();
         Map<User, Mark> results = GroupService.getCurrentGroup().getResults();
@@ -162,9 +181,7 @@ public class ManageGroupController {
 
         String status;
 
-
         status = mark != null ? "Виконав: " + mark : "Виконує";
-
 
         Text statusText = new Text("Статус: ");
         statusText.setFill(Color.WHITE);
@@ -204,9 +221,7 @@ public class ManageGroupController {
 
         String status;
 
-
         status = isReady ? "Готовий" : "Не готовий";
-
 
         Text statusText = new Text("Статус: ");
         statusText.setFill(Color.WHITE);
@@ -234,12 +249,18 @@ public class ManageGroupController {
         return userCard;
     }
 
+    /**
+     * Handles the action of choosing a test.
+     */
     @FXML
     public void handleChooseTest() {
         String fxml = "view/group/ChooseTest.fxml";
         mainController.setPage(fxml, groupLabel.getScene());
     }
 
+    /**
+     * Handles the action of changing the user's readiness status.
+     */
     @FXML
     public void handleChangeStatus() {
         ChangeUserStatusRequest request = ChangeUserStatusRequest.builder()

@@ -2,22 +2,13 @@ package com.tritonkor.grouptester.desktop.presentation.controller;
 
 import static com.tritonkor.grouptester.desktop.App.springContext;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tritonkor.grouptester.desktop.App;
 import com.tritonkor.grouptester.desktop.domain.AuthorizeService;
-import com.tritonkor.grouptester.desktop.domain.TagService;
-import com.tritonkor.grouptester.desktop.persistence.entity.Tag;
-import com.tritonkor.grouptester.desktop.persistence.entity.Test;
 import com.tritonkor.grouptester.desktop.presentation.util.SpringFXMLLoader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.http.HttpResponse;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -30,7 +21,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import org.springframework.stereotype.Component;
 
-
+/**
+ * Controller for the main view of the application.
+ */
 @Component
 public class MainController {
 
@@ -45,11 +38,22 @@ public class MainController {
     @FXML
     private Label usernameLabel;
 
+    /**
+     * Initializes the controller after its root element has been completely processed.
+     * Loads user data upon initialization.
+     *
+     * @throws IOException if an I/O error occurs while loading user data.
+     */
     @FXML
     public void initialize() throws IOException {
         loadUserData();
     }
 
+    /**
+     * Handles menu selection events.
+     *
+     * @param actionEvent the ActionEvent representing the menu selection.
+     */
     @FXML
     private void handleMenuSelection(ActionEvent actionEvent) {
         ToggleButton selectedButton = (ToggleButton) toggleGroup.getSelectedToggle();
@@ -66,6 +70,11 @@ public class MainController {
         }
     }
 
+    /**
+     * Switches the current page to the one specified by the FXML file path.
+     *
+     * @param fxmlFile the path to the FXML file representing the new page.
+     */
     public void switchPage(String fxmlFile) {
         try {
             var fxmlLoader = new SpringFXMLLoader(springContext);
@@ -76,6 +85,12 @@ public class MainController {
         }
     }
 
+    /**
+     * Sets the scene to the specified FXML file.
+     *
+     * @param fxmlFile the path to the FXML file representing the new scene.
+     * @param scene the Scene object to set.
+     */
     public void setPage(String fxmlFile, Scene scene) {
         try {
             var fxmlLoader = new SpringFXMLLoader(springContext);
@@ -86,6 +101,11 @@ public class MainController {
         }
     }
 
+    /**
+     * Loads user data and populates the UI components with the user's information.
+     *
+     * @throws IOException if an I/O error occurs while loading user data.
+     */
     private void loadUserData() throws IOException {
         usernameLabel.setText(AuthorizeService.getCurrentUser().getUsername());
 

@@ -13,7 +13,6 @@ import com.tritonkor.grouptester.desktop.presentation.controller.MainController;
 import jakarta.annotation.PreDestroy;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -30,6 +29,9 @@ import javafx.scene.image.ImageView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * Controller responsible for managing the process of running a test.
+ */
 @Component
 public class RunTestController {
     @Autowired
@@ -62,6 +64,10 @@ public class RunTestController {
     private Task<Void> testTask;
     private Task<Void> timerTask;
 
+    /**
+     * Initializes the RunTestController after its root element has been completely processed.
+     * Starts the test and timer threads.
+     */
     @FXML
     public void initialize() {
         userAnswers = new ArrayList<>();
@@ -87,6 +93,9 @@ public class RunTestController {
         testThread.start();
     }
 
+    /**
+     * Runs the test by iterating through questions and presenting them to the user.
+     */
     public void runTest() {
         List<Question> questions = TestService.getCurrentTest().getQuestions();
 
@@ -123,18 +132,26 @@ public class RunTestController {
             }
         }
 
-        // Вираховуємо результат
         calculateResult(userAnswers, questionsCount);
     }
 
+    /**
+     * Writes the data of the current question to the UI.
+     *
+     * @param question The current question.
+     */
     public void writeQuestionData(Question question) {
         List<Answer> answers = question.getAnswers();
 
         questionLabel.setText(question.getText());
 
         byte[] image = question.getImage();
-        InputStream inputStream = new ByteArrayInputStream(image);
-        photoImageView.setImage(new Image(inputStream));
+        if (image != null) {
+            InputStream inputStream = new ByteArrayInputStream(image);
+            photoImageView.setImage(new Image(inputStream));
+        } else {
+            photoImageView.setImage(null);
+        }
 
         answerLabel1.setText(answers.get(0).getText());
         answerLabel2.setText(answers.get(1).getText());
@@ -142,6 +159,13 @@ public class RunTestController {
         answerLabel4.setText(answers.get(3).getText());
     }
 
+    /**
+     * Sets up click handlers for answer labels.
+     *
+     * @param label The answer label.
+     * @param userAnswers The list of user answers.
+     * @param answer The answer.
+     */
     private void setupLabelClickHandler(Label label, List<Answer> userAnswers, Answer answer) {
         label.setOnMouseClicked(event -> {
             userAnswers.add(answer);
@@ -149,6 +173,9 @@ public class RunTestController {
         });
     }
 
+    /**
+     * Runs the timer to keep track of the test duration.
+     */
     private void runTimer() {
         int testDurationMinutes = TestService.getCurrentTest().getTime();
         int testDurationSeconds = testDurationMinutes * 60;
@@ -177,12 +204,24 @@ public class RunTestController {
         });
     }
 
+    /**
+     * Formats time in seconds to a human-readable format.
+     *
+     * @param seconds The time in seconds.
+     * @return The formatted time string (MM:SS).
+     */
     private String formatTime(int seconds) {
         int mins = seconds / 60;
         int secs = seconds % 60;
         return String.format("%02d:%02d", mins, secs);
     }
 
+    /**
+     * Calculates the result of the test.
+     *
+     * @param userAnswers The list of user answers.
+     * @param questionsCount The total number of questions.
+     */
     private void calculateResult(List<Answer> userAnswers, int questionsCount) {
         closeThreads();
 

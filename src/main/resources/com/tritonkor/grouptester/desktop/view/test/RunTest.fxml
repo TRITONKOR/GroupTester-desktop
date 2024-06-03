@@ -21,7 +21,7 @@
 
   <center>
     <VBox alignment="CENTER" spacing="20">
-      <Label fx:id="questionLabel" styleClass="transparent-text-field" style="-fx-font-size: 18" maxWidth="500"/>
+      <Label fx:id="questionLabel" styleClass="transparent-text-field" style="-fx-font-size: 34"/>
       <HBox alignment="CENTER">
         <AnchorPane fx:id="photoAnchorPane" prefHeight="350" prefWidth="450"
           style="-fx-background-color: #2C2C2C; -fx-background-radius: 10;">

@@ -4,7 +4,6 @@ import static com.tritonkor.grouptester.desktop.App.springContext;
 
 import com.tritonkor.grouptester.desktop.App;
 import com.tritonkor.grouptester.desktop.domain.AuthorizeService;
-import com.tritonkor.grouptester.desktop.net.controller.AuthController;
 import com.tritonkor.grouptester.desktop.persistence.entity.User.Role;
 import com.tritonkor.grouptester.desktop.presentation.util.SpringFXMLLoader;
 import java.io.IOException;
@@ -21,6 +20,10 @@ import javafx.scene.layout.BorderPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * Controller for the user authentication view.
+ * Handles user interactions for logging in.
+ */
 @Component
 public class AuthenticateController {
     @Autowired
@@ -33,6 +36,10 @@ public class AuthenticateController {
     @FXML
     private PasswordField passwordField;
 
+    /**
+     * Handles the user authentication process.
+     * Authenticates the user and navigates to the main view based on the user's role.
+     */
     @FXML
     private void handleAuthenticateUser() {
         String username = loginField.getText();
@@ -59,6 +66,12 @@ public class AuthenticateController {
         }
     }
 
+    /**
+     * Handles the event when the register hyperlink is clicked.
+     * Loads the registration view.
+     *
+     * @param event the action event triggered by clicking the hyperlink.
+     */
     @FXML
     private void handleRegisterHyperlink(ActionEvent event) {
         try {

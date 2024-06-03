@@ -2,16 +2,11 @@ package com.tritonkor.grouptester.desktop.presentation.controller.auth;
 
 import static com.tritonkor.grouptester.desktop.App.springContext;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.tritonkor.grouptester.desktop.App;
 import com.tritonkor.grouptester.desktop.domain.AuthorizeService;
 import com.tritonkor.grouptester.desktop.domain.FileService;
-import com.tritonkor.grouptester.desktop.net.controller.AuthController;
 import com.tritonkor.grouptester.desktop.net.request.RegisterRequest;
 import com.tritonkor.grouptester.desktop.persistence.entity.User.Role;
-import com.tritonkor.grouptester.desktop.presentation.controller.MainController;
 import com.tritonkor.grouptester.desktop.presentation.util.SpringFXMLLoader;
 import com.tritonkor.grouptester.desktop.presentation.viewmodel.UserViewModel;
 import java.io.IOException;
@@ -20,9 +15,11 @@ import java.time.LocalDate;
 import java.util.UUID;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -34,6 +31,10 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * Controller for the user registration view.
+ * Handles user interactions for registering a new user.
+ */
 @Component
 public class RegisterController {
     @Autowired
@@ -51,15 +52,21 @@ public class RegisterController {
     private ComboBox<Role> roleComboBox;
     @FXML
     private ImageView avatarImage;
+    @FXML
+    private DatePicker birthdayDatePicker;
 
     private UserViewModel userViewModel;
 
+    /**
+     * Initializes the controller and binds UI fields to the view model.
+     *
+     * @throws IOException if an I/O error occurs during initialization.
+     */
     @FXML
     public void initialize() throws IOException {
         roleComboBox.getItems().addAll(Role.values());
         roleComboBox.setValue(Role.STUDENT);
 
-        // Створення користувача з пустими даними як приклад
         userViewModel = new UserViewModel(
                 UUID.randomUUID(),
                 "JohnDoe",
@@ -73,21 +80,38 @@ public class RegisterController {
                 Role.STUDENT
         );
 
-        // Зв'язування властивостей ViewModel з View
         bindFieldsToViewModel();
     }
 
+    /**
+     * Binds the UI fields to the corresponding properties in the view model.
+     */
     private void bindFieldsToViewModel() {
         loginField.textProperty().bindBidirectional(userViewModel.usernameProperty());
         emailField.textProperty().bindBidirectional(userViewModel.emailProperty());
         passwordField.textProperty().bindBidirectional(userViewModel.passwordProperty());
         avatarImage.imageProperty().bindBidirectional(userViewModel.avatarProperty());
-        //birthdayPicker.valueProperty().bindBidirectional(userViewModel.birthdayProperty());
+        birthdayDatePicker.valueProperty().bindBidirectional(userViewModel.birthdayProperty());
         roleComboBox.valueProperty().bindBidirectional(userViewModel.roleProperty());
     }
 
+    /**
+     * Handles the user registration process.
+     *
+     * @throws IOException if an I/O error occurs during registration.
+     */
     @FXML
     private void handleRegisterUser() throws IOException {
+        if (userViewModel.getUsername().isBlank() || userViewModel.getPassword().isBlank() || userViewModel.getEmail().isBlank()
+         || userViewModel.getBirthday() == null || userViewModel.getRole().getName().isBlank() || userViewModel.getAvatarPath() == null) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Не вдалось зареєструватись");
+            alert.setHeaderText(null);
+            alert.setContentText("Не всі поля були заповнені");
+            alert.showAndWait();
+            return;
+        }
+
         RegisterRequest request = RegisterRequest.builder()
                 .username(userViewModel.getUsername())
                 .password(userViewModel.getPassword())
@@ -110,6 +134,11 @@ public class RegisterController {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Handles the event when the avatar image is clicked.
+     * Opens a file chooser to select a new avatar image.
+     */
     @FXML
     private void handleAvatarImageClick() {
         FileChooser fileChooser = new FileChooser();
@@ -122,10 +151,16 @@ public class RegisterController {
             userViewModel.setAvatar(image);
             userViewModel.setAvatarPath(path);
 
-            // Встановлюємо вибране фото як зображення для ImageView
             avatarImage.setImage(image);
         }
     }
+
+    /**
+     * Handles the event when the authenticate hyperlink is clicked.
+     * Loads the authentication view.
+     *
+     * @param event the action event triggered by clicking the hyperlink.
+     */
     @FXML
     private void handleAuthenticateHyperlink(ActionEvent event) {
         try {

@@ -65,7 +65,6 @@ public class TestListController {
                 tests = objectMapper.readValue(jsonResponse, new TypeReference<List<Test>>() {
                 });
             } else {
-                // Обробка помилки або повернення порожнього списку
                 throw new RuntimeException("Failed to fetch tests: " + response.statusCode());
             }
         } catch (JsonProcessingException e) {}

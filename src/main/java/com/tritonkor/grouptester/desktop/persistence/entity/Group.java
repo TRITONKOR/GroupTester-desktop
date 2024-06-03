@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * Represents a group entity in the GroupTester desktop application.
+ */
 public class Group extends Entity{
     private String name;
     private String code;
@@ -13,6 +16,16 @@ public class Group extends Entity{
     private Map<User, Boolean> users;
     private Map<User, Mark> results;
 
+    /**
+     * Constructs a group with specified attributes.
+     *
+     * @param id               The unique identifier of the group.
+     * @param name             The name of the group.
+     * @param code             The code of the group.
+     * @param readyToTesting   Indicates whether the group is ready for testing.
+     * @param canApplyNewUsers Indicates whether new users can apply to join the group.
+     * @param test             The test associated with the group.
+     */
     public Group(UUID id, String name, String code, Boolean readyToTesting, Boolean canApplyNewUsers, Test test) {
         super(id);
         this.name = name;
@@ -24,6 +37,9 @@ public class Group extends Entity{
         this.results = new HashMap<>();
     }
 
+    /**
+     * Constructs an empty group.
+     */
     public Group() {
         super(null);
     }
@@ -74,10 +90,6 @@ public class Group extends Entity{
 
     public void setTest(Test test) {
         this.test = test;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public void setCode(String code) {
